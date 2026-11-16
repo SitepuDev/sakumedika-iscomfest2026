@@ -5,6 +5,7 @@ if (!isset($_SESSION['keranjang']) || !is_array($_SESSION['keranjang'])) {
     $_SESSION['keranjang'] = [];
 }
 
+
 $daftar_apotek = [
     [
         'id_apotek' => 'APT-01',
@@ -117,7 +118,7 @@ function getRingkasanKeranjang($conn) {
     ];
 }
 
-
+// Endpoint AJAX Cek Status Real-Time dari Server Midtrans
 if (isset($_POST['ajax_cek_midtrans']) && !empty($_POST['order_id'])) {
     header('Content-Type: application/json');
     $order_id = trim($_POST['order_id']);
@@ -126,6 +127,7 @@ if (isset($_POST['ajax_cek_midtrans']) && !empty($_POST['order_id'])) {
     exit;
 }
 
+// Endpoint AJAX Keranjang (Tanpa Reload Halaman)
 if (isset($_POST['ajax_cart'])) {
     header('Content-Type: application/json');
     $act = $_POST['ajax_cart'];
@@ -157,7 +159,7 @@ if (isset($_POST['ajax_cart'])) {
     exit;
 }
 
-
+// Fitur Otomatis dari Tombol "+ Masukkan ke Apotek" di index.php
 if (isset($_GET['auto_cari_obat'])) {
     $id_cari = (int)$_GET['auto_cari_obat'];
     $q_obt = mysqli_query($conn, "SELECT * FROM obat WHERE id = $id_cari");
@@ -252,7 +254,7 @@ usort($list_apotek_tampil, function($a, $b) use ($urut_jarak) {
     return $b['jarak_km'] <=> $a['jarak_km'];
 });
 
-
+// PROSES CHECKOUT & GENERATE SNAP TOKEN MIDTRANS
 $struk_pesanan = null;
 if (isset($_POST['checkout_sekarang']) && !empty($_SESSION['keranjang']) && $apotek_aktif !== null) {
     $nama_pembeli = mysqli_real_escape_string($conn, htmlspecialchars(trim($_POST['nama_pembeli'])));
@@ -312,7 +314,7 @@ if (isset($_POST['checkout_sekarang']) && !empty($_SESSION['keranjang']) && $apo
     }
 }
 
-
+// QUERY KATALOG OBAT + SISTEM PAGINATION (12 OBAT PER HALAMAN)
 $cari = isset($_GET['cari']) ? trim($_GET['cari']) : '';
 $kategori_aktif = isset($_GET['kategori']) ? trim($_GET['kategori']) : '';
 
@@ -403,7 +405,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
             padding-bottom: 70px;
         }
 
-        
+        /* HEADER STICKY: Presisi 1240px di Tengah Layar */
         .market-header {
             position: sticky;
             top: 0;
@@ -522,7 +524,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
             border-radius: 999px;
         }
 
-        
+        /* KONTAINER UTAMA: Tepat di Tengah, Lebar Penuh 1240px */
         .market-container {
             width: 100%;
             max-width: 1240px;
@@ -562,7 +564,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         }
         .auto-locator-alert.dialihkan { border-left-color: #F59E0B; }
 
-       
+        /* TAHAP 1: PILIH APOTEK */
         .locator-hero {
             width: 100%;
             background: linear-gradient(135deg, #00529C 0%, #00A3E0 100%);
@@ -628,6 +630,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
             color: #ffffff; font-weight: 700; font-size: 0.86rem; box-shadow: 0 6px 16px rgba(0, 102, 255, 0.22);
         }
 
+        /* TAHAP 2: BELANJA OBAT (100% SEJAJAR & PRESISI) */
         .selected-pharmacy-banner {
             width: 100%;
             background: #FFFFFF;
@@ -650,7 +653,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         }
         .btn-ganti-apotek:hover { background: var(--crystal-blue); color: #ffffff; }
 
-
+        /* Kotak Filter Kategori Lebar Penuh Sejajar Grid */
         .catalog-filter-wrapper {
             width: 100%;
             background: #FFFFFF;
@@ -695,7 +698,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
             font-weight: 600;
         }
 
-  
+        /* GRID 4 KOLOM DIKUNCI DENGAN minmax(0, 1fr) AGAR TIDAK BISA MELENCENG */
         .product-grid {
             width: 100%;
             display: grid;
@@ -834,7 +837,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         }
         .btn-add-market:hover { filter: brightness(1.07); transform: translateY(-1px); }
 
-      
+        /* PAGINATION HALAMAN 1, 2, 3... */
         .pagination-wrapper {
             width: 100%;
             margin-top: 32px;
@@ -873,7 +876,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         }
         .page-link.disabled { opacity: 0.45; pointer-events: none; }
 
-    
+        /* INVOICE CARD */
         .receipt-card {
             width: 100%;
             background: #FFFFFF;
@@ -916,7 +919,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         }
         .btn-pay-secondary:hover { background: #EFF6FF; border-color: var(--crystal-blue); color: var(--crystal-blue); }
 
-    
+        /* DRAWER KERANJANG */
         .cart-overlay {
             position: fixed; inset: 0; background: rgba(11, 37, 69, 0.45);
             backdrop-filter: blur(6px); z-index: 100; display: none; justify-content: flex-end;
@@ -985,7 +988,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
         <div class="market-header-inner">
             <div class="left-brand-group">
                 <a href="index.php?sesi=mulai" class="btn-back-consult">&larr; Sesi Tanya Jawab</a>
-                <span class="market-brand-title">Apotek Market</span>
+                <span class="market-brand-title">Apotek</span>
             </div>
 
             <?php if ($apotek_aktif !== null): ?>
@@ -1014,6 +1017,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
     <main class="market-container">
 
         <?php if ($apotek_aktif === null): ?>
+            <!-- TAHAP 1: PILIH APOTEK -->
             <section class="locator-hero">
                 <h1>Pilih Lokasi Apotek Terlebih Dahulu</h1>
                 <p>Daftar apotek diurutkan mulai dari jangkauan <b>terjauh hingga yang paling dekat</b>. Produk kesehatan yang sudah Anda pilih tetap tersimpan aman di keranjang belanja.</p>
@@ -1064,6 +1068,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
             </div>
 
         <?php else: ?>
+            <!-- TAHAP 2: BELANJA OBAT (SEJAJAR PENUH 100%) -->
             <?php if ($info_auto_apotek !== null): ?>
                 <div class="auto-locator-alert <?php echo $info_auto_apotek['tipe'] === 'dialihkan' ? 'dialihkan' : ''; ?>">
                     <?php echo $info_auto_apotek['pesan']; ?>
@@ -1086,6 +1091,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
                 <a href="apotek.php?ganti_apotek=1" class="btn-ganti-apotek">&larr; Pilih Cabang Lain</a>
             </div>
 
+            <!-- RINGKASAN TAGIHAN & STATUS PEMBAYARAN -->
             <?php if ($struk_pesanan !== null): ?>
                 <div class="receipt-card" id="receiptCard">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
@@ -1222,6 +1228,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
                 </script>
             <?php endif; ?>
 
+            <!-- Panel Filter Kategori Lebar Penuh 100% Sejajar -->
             <div class="catalog-filter-wrapper">
                 <div class="category-bar">
                     <a href="apotek.php" class="cat-pill <?php echo $kategori_aktif === '' ? 'active' : ''; ?>">Semua Kategori</a>
@@ -1240,6 +1247,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
                 </div>
             </div>
 
+            <!-- Katalog Obat (4 Kolom Sejajar Penuh 100%) -->
             <div class="product-grid">
                 <?php 
                 $obat_kosong_cabang = isset($apotek_aktif['obat_kosong']) ? $apotek_aktif['obat_kosong'] : [];
@@ -1289,7 +1297,7 @@ $buka_drawer = isset($_GET['buka_keranjang']) ? true : false;
                 <?php endwhile; ?>
             </div>
 
-        
+            <!-- Navigasi Nomor Halaman (Tetap Tampil Sebagai Indikator Halaman) -->
             <nav class="pagination-wrapper" aria-label="Navigasi Halaman Obat">
                 <a href="<?php echo buatUrlHalaman(max(1, $halaman_sekarang - 1), $kategori_aktif, $cari); ?>"
                    class="page-link <?php echo $halaman_sekarang <= 1 ? 'disabled' : ''; ?>">
