@@ -22,6 +22,7 @@ if (!isset($_SESSION['chat_history'])) {
     $_SESSION['chat_history'] = [];
 }
 
+
 if (isset($_POST['beli_obat_id'])) {
     $id_obat = (int)$_POST['beli_obat_id'];
     if ($id_obat > 0) {
@@ -254,6 +255,7 @@ $mode_tanya = $_SESSION['mode_tanya'];
         .tag-title { font-size: 0.84rem; font-weight: 800; color: var(--crystal-navy); }
         .tag-sub { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
 
+        /* SESI TANYA JAWAB */
         .consult-screen { height: 100vh; display: flex; flex-direction: column; position: relative; z-index: 10; }
         .consult-topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; }
         .market-corner-btn {
@@ -450,7 +452,7 @@ $mode_tanya = $_SESSION['mode_tanya'];
                         </svg>
                     </div>
                     <div class="market-text">
-                        <span class="market-title">Apotek Market</span>
+                        <span class="market-title">Apotek</span>
                         <span class="market-sub">Beli Obat Resmi</span>
                     </div>
                     <?php if ($total_keranjang > 0): ?>
