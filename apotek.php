@@ -254,7 +254,7 @@ usort($list_apotek_tampil, function($a, $b) use ($urut_jarak) {
     return $b['jarak_km'] <=> $a['jarak_km'];
 });
 
-// PROSES CHECKOUT & GENERATE SNAP TOKEN MIDTRANS
+
 $struk_pesanan = null;
 if (isset($_POST['checkout_sekarang']) && !empty($_SESSION['keranjang']) && $apotek_aktif !== null) {
     $nama_pembeli = mysqli_real_escape_string($conn, htmlspecialchars(trim($_POST['nama_pembeli'])));
